@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-0: #faf9f5;
+  --bg-000: #faf9f5;
+  --bg-100: #ffffff;
+  --bg-200: #f7f7f5;
+  --bg-300: #efefed;
+  --text-100: #1a1a1a;
+  --text-200: #3d3d3a;
+  --text-300: #73726c;
+  --text-400: #888888;
+  --text-500: #999999;
+  --accent: #c96442;
+  --accent-hover: #b85538;
+  --radius: 0.5rem;
+  --ease-silk: cubic-bezier(0.2, 0, 0, 1);
+
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --primary: #c96442;
+  --primary-foreground: #ffffff;
+  --secondary: #f7f7f5;
+  --muted: #73726c;
+  --border: #e5e5e3;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --ring: #c96442;
+  --background: var(--bg-0);
+  --foreground: var(--text-100);
+}
+
+.dark {
+  --bg-0: #0a0a0a;
+  --bg-000: #0a0a0a;
+  --bg-100: #141414;
+  --bg-200: #1a1a1a;
+  --bg-300: #252525;
+  --text-100: #eaeaea;
+  --text-200: #cfcfcf;
+  --text-300: #888888;
+  --text-400: #666666;
+  --text-500: #444444;
+  --accent: #c96442;
+  --accent-hover: #d97650;
+
+  --card: #141414;
+  --card-foreground: #eaeaea;
+  --primary: #c96442;
+  --primary-foreground: #ffffff;
+  --secondary: #1a1a1a;
+  --muted: #666666;
+  --border: #2a2a2a;
+  --popover: #1a1a1a;
+  --popover-foreground: #eaeaea;
+  --ring: #c96442;
+  --background: var(--bg-0);
+  --foreground: var(--text-100);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-200);
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  color: var(--foreground);
+}
+
+.font-heading {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 2px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.14);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Focus */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Smooth theme transitions */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.1s ease;
+}
+
+/* Typing dots */
+@keyframes dotPulse {
+  0%,
+  80%,
+  100% {
+    transform: scaleY(0.5);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+.typing-dot {
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+/* Suggestion card hover */
+.suggestion-card {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+.suggestion-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  border-color: #c96442;
+}
+.dark .suggestion-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
