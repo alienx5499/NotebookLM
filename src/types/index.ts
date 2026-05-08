@@ -3,7 +3,19 @@ export interface Message {
   role: 'user' | 'assistant';
   content: string;
   timestamp: number;
-  sources?: string[];
+  sources?: { pageContent: string; pageNumber?: number; source: string }[];
+}
+
+export interface Document {
+  id: string;
+  name?: string;
+  content?: string;
+  pageContent: string;
+  metadata: {
+    source: string;
+    fileType?: string;
+    pageNumber?: number;
+  };
 }
 
 export interface SessionFile {

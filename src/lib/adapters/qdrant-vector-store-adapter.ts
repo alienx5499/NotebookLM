@@ -101,7 +101,7 @@ export class QdrantVectorStoreAdapter implements VectorStorePort {
   async addDocuments(docs: Document[]): Promise<void> {
     await this.ensureCollection();
     const client = getQdrantClient();
-    const texts = docs.map((doc) => doc.pageContent || doc.content);
+    const texts = docs.map((doc) => doc.pageContent || doc.content || '');
 
     console.log(`Generating embeddings for ${texts.length} chunks...`);
     const vectors = await embedBatch(texts);
