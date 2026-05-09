@@ -63,7 +63,7 @@ sequenceDiagram
     VS->>VS: Embed via Vertex AI text-embedding-004
     VS->>Q: upsert notebook-lm-docs
     Q-->>VS: done
-    FE-->>API: { success, chunksCreated }
+    API-->>FE: { success, chunksCreated }
 
     Note over U,Q: Query Phase
     U->>FE: Ask question
@@ -75,8 +75,8 @@ sequenceDiagram
     VS-->>API: context chunks
     API->>API: Build prompt with context
     API->>API: Gemini-2.5-flash generateContent
-    FE<<--API: { answer, sources }
-    U<<--FE: Display answer + source cards
+    API-->>FE: { answer, sources }
+    FE-->>U: Display answer + source cards
 ```
 
 ---
