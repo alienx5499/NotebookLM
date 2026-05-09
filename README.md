@@ -63,7 +63,7 @@ sequenceDiagram
     VS->>VS: Embed via Vertex AI text-embedding-004
     VS->>Q: upsert notebook-lm-docs
     Q-->>VS: done
-    FE<<--API: { success, chunksCreated }
+    FE-->>API: { success, chunksCreated }
 
     Note over U,Q: Query Phase
     U->>FE: Ask question
