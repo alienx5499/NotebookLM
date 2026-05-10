@@ -150,12 +150,12 @@ function UploadZone({ isUploading, uploadProgress, onFileSelect }: UploadZonePro
       <p className="text-base font-medium text-white/70 group-hover:text-white/90 text-center">
         Drop a file here or click to upload
       </p>
-      <p className="mt-1.5 text-sm text-white/30 text-center">PDF or TXT</p>
+      <p className="mt-1.5 text-sm text-white/30 text-center">PDF, TXT, CSV, DOCX</p>
 
       <input
         ref={fileInputRef}
         type="file"
-        accept=".pdf,.txt"
+        accept=".pdf,.txt,.csv,.docx,application/pdf,text/plain,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];

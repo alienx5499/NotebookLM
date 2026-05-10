@@ -142,7 +142,7 @@ export function PromptInputBox({ onSend, isLoading, placeholder, className }: Pr
         id="file-input"
         type="file"
         multiple
-        accept=".pdf,.txt"
+        accept=".pdf,.txt,.csv,.docx,application/pdf,text/plain,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         className="hidden"
         onChange={handleFileSelect}
       />

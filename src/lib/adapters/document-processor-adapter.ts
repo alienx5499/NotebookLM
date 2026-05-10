@@ -1,6 +1,8 @@
 import type { DocumentProcessorPort } from '../ports/document-processor-port';
 import type { Document } from '@/types';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import Papa from 'papaparse';
+import mammoth from 'mammoth';
 import crypto from 'crypto';
 
 // Dynamic import to avoid bundling test files
@@ -13,12 +15,24 @@ export class DocumentProcessorAdapter implements DocumentProcessorPort {
   async processFile(buffer: ArrayBuffer, fileName: string, fileType: string): Promise<Document[]> {
     let text: string;
 
-    if (fileType === 'application/pdf') {
-      text = await this.extractTextFromPDF(buffer);
-    } else if (fileType === 'text/plain') {
-      text = this.extractTextFromTxt(buffer);
-    } else {
-      throw new Error(`Unsupported file type: ${fileType}`);
+    switch (fileType) {
+      case 'application/pdf':
+        text = await this.extractTextFromPDF(buffer);
+        break;
+      case 'text/plain':
+      case 'text/markdown':
+        text = this.extractTextFromPlain(buffer);
+        break;
+      case 'text/csv':
+        text = this.extractTextFromCSV(buffer);
+        break;
+      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        text = await this.extractTextFromDocx(buffer);
+        break;
+      case 'application/msword':
+        throw new Error('Legacy .doc format not supported. Please use .docx, .pdf, .txt, or .csv');
+      default:
+        throw new Error(`Unsupported file type: ${fileType}`);
     }
 
     return this.chunkDocument(text, { source: fileName, fileType });
@@ -30,9 +44,44 @@ export class DocumentProcessorAdapter implements DocumentProcessorPort {
     return data.text;
   }
 
-  extractTextFromTxt(buffer: ArrayBuffer): string {
+  extractTextFromPlain(buffer: ArrayBuffer): string {
     const decoder = new TextDecoder('utf-8');
     return decoder.decode(buffer);
+  }
+
+  // Alias for interface compatibility
+  extractTextFromTxt(buffer: ArrayBuffer): string {
+    return this.extractTextFromPlain(buffer);
+  }
+
+  extractTextFromCSV(buffer: ArrayBuffer): string {
+    const decoder = new TextDecoder('utf-8');
+    const csvText = decoder.decode(buffer);
+    const result = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+
+    // Convert CSV rows to readable text
+    const rows = result.data as Record<string, string>[];
+    if (rows.length === 0) return '';
+
+    const headers = Object.keys(rows[0]);
+    const textLines: string[] = [];
+
+    // Header row
+    textLines.push(headers.join(' | '));
+    textLines.push(headers.map(() => '---').join(' | '));
+
+    // Data rows
+    for (const row of rows) {
+      const values = headers.map((h) => row[h] || '');
+      textLines.push(values.join(' | '));
+    }
+
+    return textLines.join('\n');
+  }
+
+  async extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
+    const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+    return result.value;
   }
 
   private async chunkDocument(
