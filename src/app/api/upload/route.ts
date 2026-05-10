@@ -13,10 +13,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    const validTypes = ['application/pdf', 'text/plain'];
+    const validTypes = [
+      'application/pdf',
+      'text/plain',
+      'text/csv',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
     if (!validTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only PDF and TXT supported.' },
+        { error: 'Invalid file type. Only PDF, TXT, CSV, and DOCX supported.' },
         { status: 400 },
       );
     }
